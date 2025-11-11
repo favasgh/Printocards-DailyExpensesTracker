@@ -44,9 +44,7 @@ function EntryForm({ onEntryAdded, onCancel, editEntry = null }) {
   const categories = [
     'Office Supplies',
     'Transportation',
-    'Meals',
-    'Utilities',
-    'Miscellaneous',
+    'Tea',
     'Other'
   ];
 
@@ -62,7 +60,8 @@ function EntryForm({ onEntryAdded, onCancel, editEntry = null }) {
     'Rashid',
     'Fahad',
     'Anees',
-    "Saleem"
+    "Saleem",
+    "Others"
 
   ];
 
@@ -86,6 +85,10 @@ function EntryForm({ onEntryAdded, onCancel, editEntry = null }) {
         : `${API_BASE}/entries`;
       const method = editEntry ? 'PUT' : 'POST';
 
+      console.log('🌐 API URL:', API_URL);
+      console.log('🔗 Full URL:', url);
+      console.log('📤 Sending data:', formData);
+
       const response = await fetch(url, {
         method: method,
         headers: {
@@ -94,7 +97,24 @@ function EntryForm({ onEntryAdded, onCancel, editEntry = null }) {
         body: JSON.stringify(formData),
       });
 
+      console.log('📥 Response status:', response.status, response.statusText);
+
+      // Check if response is ok before parsing JSON
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Response error:', errorText);
+        try {
+          const errorJson = JSON.parse(errorText);
+          setError(errorJson.error || errorJson.message || `Server error: ${response.status}`);
+        } catch {
+          setError(`Server error: ${response.status} ${response.statusText}`);
+        }
+        setLoading(false);
+        return;
+      }
+
       const result = await response.json();
+      console.log('✅ Response data:', result);
 
       if (result.success) {
         // Reset form only if not editing
@@ -117,8 +137,8 @@ function EntryForm({ onEntryAdded, onCancel, editEntry = null }) {
         console.error('API Error:', result);
       }
     } catch (err) {
-      setError('Network error. Please check if the backend server is running.');
-      console.error('Error saving entry:', err);
+      console.error('❌ Network error:', err);
+      setError(`Network error: ${err.message}. Please check if the backend server is running and CORS is configured correctly.`);
     } finally {
       setLoading(false);
     }
