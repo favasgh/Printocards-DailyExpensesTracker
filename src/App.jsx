@@ -42,7 +42,7 @@ function App() {
               className="h-14 w-auto object-contain drop-shadow-sm"
             />
             <h1 className="text-2xl font-semibold tracking-tight text-black">
-              Daily Expense Tracker
+              Petty Cash Manager
             </h1>
           </div>
         </div>
@@ -78,7 +78,7 @@ function App() {
       <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border-t border-gray-700 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-center text-sm text-gray-300">
-            © 2025 PrintoCards And Technologies , Daily Expense Tracker
+            © 2025 PrintoCards And Technologies , Petty Cash Manager
           </p>
         </div>
       </footer>
